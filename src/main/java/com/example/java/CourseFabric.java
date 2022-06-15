@@ -15,47 +15,37 @@ import java.util.concurrent.ThreadLocalRandom;
 
 public class CourseFabric {
 
-
-    private CourseGenerator cG;
     private ThreadLocalRandom random;
-
-    CourseFabric(File file) throws IOException, InvalidFormatException {
-        cG = new CourseGenerator(file);
+    private CourseGenerator cG;
+    public CourseFabric(CourseGenerator cG) {
+        this.cG=cG;
     }
-
 
     public Course CreateCourses(){
         Course course=null;
-            double rn=Math.random();
-            if (rn<0.3)
-                course = CreateTeor();
-            else if (rn>0.3 & rn<0.6)
-                course = CreatePract();
-            else course = CreateProj();
-
-            //course = new Course(Generator(anImport.getScience()),Generator(anImport.getSubject()), Generator(anImport.getName()));
-       // course.setTeachers(cG.GeneratorTeachers(t));
-        return course;
+        int rand = ThreadLocalRandom.current().nextInt(0, 100);
+        if (rand < 30) {
+            course =  new CourseTheoretical();
+            int rn = random.current().nextInt(0, cG.getSubject().length);
+            course.setCourseData(cG.getName()[rn],
+                    cG.getScience()[random.current().nextInt(0, cG.getScience().length)],
+                    cG.getSubject()[rn]);
+            return course;
+        }else if (rand<60) {
+            course =  new CoursePractical();
+            int rn = random.current().nextInt(0, cG.getSubject().length);
+            course.setCourseData(cG.getName()[rn],
+                    cG.getScience()[random.current().nextInt(0, cG.getScience().length)],
+                    cG.getSubject()[rn]);
+            return course;
+        }else  {
+            course =  new CourseProject();
+            int rn = random.current().nextInt(0, cG.getSubject().length);
+            course.setCourseData(cG.getName()[rn],
+                    cG.getScience()[random.current().nextInt(0, cG.getScience().length)],
+                    cG.getSubject()[rn]);
+            return course;
+        }
     }
-
-
-    public Course CreateTeor() {
-        Course course = null;
-        course =  new CourseTheoretical(cG.Generator(cG.getScience()),cG.Generator(cG.getSubject()), cG.GeneratorTeor(cG.getName()));
-        return course;
-    }
-
-    public Course CreatePract() {
-        Course course = null;
-        course =  new CoursePractical(cG.Generator(cG.getScience()),cG.Generator(cG.getSubject()), cG.GeneratorPract(cG.getName()));
-        return course;
-    }
-
-    public Course CreateProj() {
-        Course course = null;
-        course =  new CourseProject(cG.Generator(cG.getScience()),cG.Generator(cG.getSubject()), cG.GeneratorProj(cG.getName()));
-        return course;
-    }
-
 
 }

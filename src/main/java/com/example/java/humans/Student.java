@@ -1,10 +1,14 @@
 package com.example.java.humans;
 
+import com.example.java.courses.Course;
+
 public class Student extends Human{
     private String group;
     private String subject;
     protected String format;
     private String science;
+    private int Id;
+    private Course course;
 
     public Student(String name, String surname, String group, String science,String subject, String format, Integer rating) {
         super(name, surname,rating);
@@ -14,9 +18,9 @@ public class Student extends Human{
         this.format=format;
     }
 
-    public Student() {
-
-    }
+//    public Student() {
+//
+//    }
 
     @Override
     public String getFullName() {
@@ -54,5 +58,13 @@ public class Student extends Human{
     public void setGroup(String group){
         this.group=group;
     }
+
+    public int getId(){return  this.Id;}
+
+    public void setId(int Id){this.Id=Id;}
+
+    public Course getCourse(){return this.course;}
+
+    public void setCourse(Course course){this.course=course;}
 
 }

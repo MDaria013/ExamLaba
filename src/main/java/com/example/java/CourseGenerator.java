@@ -1,5 +1,9 @@
 package com.example.java;
 
+import com.example.java.courses.Course;
+import com.example.java.courses.CoursePractical;
+import com.example.java.courses.CourseProject;
+import com.example.java.courses.CourseTheoretical;
 import com.example.java.humans.Teacher;
 import org.apache.poi.openxml4j.exceptions.InvalidFormatException;
 
@@ -18,20 +22,15 @@ public class CourseGenerator {
     private ThreadLocalRandom random;
 
     private String[] subject;
-    private String[] format;
-    private String[] course;
+    private String[] name;
     private String[] science;
 
     public String[] getSubject() {
         return subject;
     }
 
-    public String[] getFormat() {
-        return format;
-    }
-
     public String[] getName() {
-        return course;
+        return name;
     }
 
     public String[] getScience() {
@@ -48,7 +47,7 @@ public class CourseGenerator {
     public void setUp() throws IOException, InvalidFormatException {
         subject = reader.readData(4);
         science = reader.readData(6);
-        course = buildCourseName();
+        name = buildCourseName();
         reader.close();
     }
 
@@ -58,21 +57,23 @@ public class CourseGenerator {
         for (String sub : subject) {
             String[] words = sub.split(" ");
             if (words.length == 2) {
-                if (words[0].endsWith("ая") & words[1].endsWith("а")) {
+                if (words[0].endsWith("ая") & words[1].endsWith("ра")) {
+                    course[k] = words[0].substring(0, words[0].length() - 2) + "ой " + words[1].substring(0, words[1].length() - 1) + "ы";
+                } else if (words[0].endsWith("ая") & words[1].endsWith("а")) {
                     course[k] = words[0].substring(0, words[0].length() - 2) + "ой " + words[1].substring(0, words[1].length() - 1) + "и";
                 } else if (words[0].endsWith("ий")) {
                     course[k] = words[0].substring(0, words[0].length() - 2) + "ого " + words[1] + "а";
                 } else if (words[0].endsWith("ть") & words[1].endsWith("и")) {
                     course[k] = words[0].substring(0, words[0].length() - 1) + "и " + words[1];
                 } else if (words[0].endsWith("ые") & words[1].endsWith("ы")) {
-                    course[k] = words[0] + " " + words[1];
+                    course[k] = words[0].substring(0, words[0].length() - 1) + "х " + words[1].substring(0, words[1].length()-1) +"ов";
                 }
             } else {
-                if (words[0].endsWith("ия")) {
+                if (words[0].endsWith("ия")|words[0].endsWith("a")) {
                     course[k] =words[0].substring(0, words[0].length() - 1) + "и";
                 } else if (words[0].endsWith("ие")){
                     course[k] = words[0].substring(0, words[0].length() - 2) + "ия";;
-                }
+                } else course[k]=words[0];
             }
 
             k++;
@@ -80,7 +81,9 @@ public class CourseGenerator {
         return course;
     }
 
-        public String Generator(String[] arr) {
+
+
+      /*  public String Generator(String[] arr) {
             int i= random.nextInt(0, arr.length);
             String s = arr[i];
             return s;
@@ -117,6 +120,6 @@ public class CourseGenerator {
                 group = "Практические основы ";
             return (group+Generator(arr));
         }
-
+*/
 
     }

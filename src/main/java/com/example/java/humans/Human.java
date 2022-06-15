@@ -11,9 +11,9 @@ public abstract class Human {
         this.rating=rating;
     }
 
-    public Human() {
-
-    }
+//    public Human() {
+//
+//    }
 
     public abstract String getFullName();
 
@@ -38,5 +38,6 @@ public abstract class Human {
     public void setSurname(String surname) {
         this.surname = surname;
     }
+
 }
 

@@ -15,9 +15,9 @@ public class Teacher extends Human{
         this.patronymic = patronymic;
         this.faculty = faculty;
     }
-    public Teacher() {
-
-    }
+//    public Teacher() {
+//
+//    }
 
     public Integer getRating() {
         return this.rating;

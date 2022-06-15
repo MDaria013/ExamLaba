@@ -4,6 +4,7 @@ import com.example.java.humans.Student;
 import com.example.java.humans.Teacher;
 
 import java.util.HashSet;
+import java.util.Set;
 
 public abstract class Course {
     private String name;
@@ -12,14 +13,7 @@ public abstract class Course {
     private String format;
     private int occupancy;
 
-    public Course(String science, String subject, String name) {
-        this.science=science;
-        this.subject=subject;
-        this.name=name;
-    }
-
     public Course() {
-
     }
 
     public String getFormat() {
@@ -37,6 +31,8 @@ public abstract class Course {
         return this.subject;
     }
 
+    public void setSubject(String subject){this.subject=subject;}
+
     public String getScience(){return this.science;}
 
     public void setScience(String science) {this.science=science;}
@@ -49,26 +45,28 @@ public abstract class Course {
         this.occupancy=occupancy;
     }
 
+    public abstract void setCourseData(String name, String science, String subject);
 
-    HashSet<Teacher> teachers = new HashSet<>();
+    Set<Teacher> teachers = new HashSet<>();
 
-    public HashSet getTeachers() {
+    public Set getTeachers() {
         return teachers;
     }
 
-    public void setTeachers(HashSet teachers) {
+    public void setTeachers(Set teachers) {
         this.teachers = teachers;
     }
 
+    Set<Student> students = new HashSet<>();
 
-//    HashSet<Student> students = new HashSet<>();
-//
-//    public HashSet getStudents() {
-//        return students;
-//    }
-//
-//    public void setStudents(HashSet students) {
-//        this.students = students;
-//    }
+    public Set getStudents() {
+        return students;
+    }
+
+    public void setStudents(Set students) {
+        this.students = students;
+    }
+
 }
+
 

@@ -7,9 +7,6 @@ import org.apache.poi.xssf.usermodel.XSSFWorkbook;
 
 import java.io.File;
 import java.io.IOException;
-import java.util.ArrayList;
-import java.util.HashSet;
-import java.util.Random;
 import java.util.concurrent.ThreadLocalRandom;
 
 public class HumanGenerator {
@@ -118,7 +115,6 @@ public class HumanGenerator {
         }
         return Female_Surname;
     }
-
 
     public String GeneratorFemale_patronomyc(String[] arr) {
         String patronomyc = Generator(arr);
