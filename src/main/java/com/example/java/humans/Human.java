@@ -11,9 +11,6 @@ public abstract class Human {
         this.rating=rating;
     }
 
-//    public Human() {
-//
-//    }
 
     public abstract String getFullName();
 

@@ -15,9 +15,6 @@ public class Teacher extends Human{
         this.patronymic = patronymic;
         this.faculty = faculty;
     }
-//    public Teacher() {
-//
-//    }
 
     public Integer getRating() {
         return this.rating;
@@ -25,7 +22,7 @@ public class Teacher extends Human{
 
     @Override
     public String getFullName() {
-        return getSurname()+" "+getName()+" "+getPatronymic()+" - "+getFaculty()+" = "+getRating();
+        return getSurname()+" "+getName()+" "+getPatronymic();
     }
 
     public String getPatronymic() {

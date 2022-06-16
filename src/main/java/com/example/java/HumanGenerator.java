@@ -79,10 +79,14 @@ public class HumanGenerator {
         String[] patronymic = new String[male_name.length];
         int k=0;
         for (String male_name: male_name) {
-            if (male_name.endsWith("ев")) {
-                patronymic[k] = male_name.substring(0, male_name.length() - 2) + "ьвович";}
-            else if (male_name.endsWith("а")|male_name.endsWith("ья")) {
+            if (male_name.endsWith("лий")|male_name.endsWith("ний")) {
+                patronymic[k] = male_name.substring(0, male_name.length() - 2) + "ьевич";
+            } else if (male_name.endsWith("ел")) {
+                patronymic[k] = male_name.substring(0, male_name.length() - 2) + "лович";
+            } else if (male_name.endsWith("а")|male_name.endsWith("ья")) {
                 patronymic[k] = male_name.substring(0, male_name.length() - 1) + "ич";
+            } else if (male_name.endsWith("ев")) {
+                patronymic[k] = male_name.substring(0, male_name.length() - 2) + "ьвович";
             } else if (male_name.endsWith("ж")|male_name.endsWith("ш")|male_name.endsWith("ч")|male_name.endsWith("щ")|male_name.endsWith("ц")|male_name.endsWith("р")|
                     male_name.endsWith("н")|male_name.endsWith("л")|male_name.endsWith("б")|male_name.endsWith("м")|male_name.endsWith("с")|
                     male_name.endsWith("к")|male_name.endsWith("г")|male_name.endsWith("в")|male_name.endsWith("д")|male_name.endsWith("п")){
@@ -118,7 +122,11 @@ public class HumanGenerator {
 
     public String GeneratorFemale_patronomyc(String[] arr) {
         String patronomyc = Generator(arr);
-        String Female_patronomyc = patronomyc.substring(0, patronomyc.length() - 3) + "вна";
+        String Female_patronomyc = null;
+        if (patronomyc.endsWith("льич")) {
+            Female_patronomyc = patronomyc.substring(0, patronomyc.length() - 1) + "нична";
+        }else{
+        Female_patronomyc = patronomyc.substring(0, patronomyc.length() - 3) + "вна";}
         return Female_patronomyc;
     }
 

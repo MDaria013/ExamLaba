@@ -8,7 +8,7 @@ public class Student extends Human{
     protected String format;
     private String science;
     private int Id;
-    private Course course;
+    private int course=0;
 
     public Student(String name, String surname, String group, String science,String subject, String format, Integer rating) {
         super(name, surname,rating);
@@ -18,9 +18,6 @@ public class Student extends Human{
         this.format=format;
     }
 
-//    public Student() {
-//
-//    }
 
     @Override
     public String getFullName() {
@@ -63,8 +60,9 @@ public class Student extends Human{
 
     public void setId(int Id){this.Id=Id;}
 
-    public Course getCourse(){return this.course;}
+    public int getCourse(){return this.course;}
 
-    public void setCourse(Course course){this.course=course;}
+    public void setCourse(int course){
+        this.course=course;}
 
 }

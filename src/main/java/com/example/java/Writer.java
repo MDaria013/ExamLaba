@@ -13,10 +13,6 @@ import javafx.scene.control.TreeView;
 import org.apache.poi.ss.formula.functions.T;
 
 import java.util.ArrayList;
-import java.util.Arrays;
-import java.util.Collections;
-import java.util.Comparator;
-import java.util.concurrent.ThreadLocalRandom;
 
 public class Writer {
 
@@ -29,7 +25,7 @@ public class Writer {
         int g=0;
 
 
-        TreeItem<String> rootItem = new TreeItem<>("Курсы");
+        TreeItem<String> rootItem = new TreeItem<>();
         rootItem.setExpanded(true);
         TreeItem<String> projBranchItem = new TreeItem<>();
         rootItem.getChildren().add(projBranchItem);
@@ -64,21 +60,25 @@ public class Writer {
 
                 TreeItem<String> teacherItem = new TreeItem<>("Преподаватель: " + teacher.getFullName());
                 c.getChildren().add(teacherItem);
+                teacherItem.getChildren().add(new TreeItem<>("Факультет : " + teacher.getFaculty()));
+                teacherItem.getChildren().add(new TreeItem<>("Рейтинг : " + teacher.getRating()));
 
             });
+
+            TreeItem<String> studentItem = new TreeItem<>("Студенты: " );
+            c.getChildren().add(studentItem);
 
             course.getStudents().forEach((obj) -> {
                 Student student = (Student) obj;
 
-                TreeItem<String> studentItem = new TreeItem<>(student.getId()+". " +student.getFullName() + " " + student.getPreference());
-                c.getChildren().add(studentItem);
+                studentItem.getChildren().add(new TreeItem<>(student.getId()+". " +student.getFullName() + " " + student.getPreference()));
 
             });
 
-
         }
 
-        practBranchItem.setValue("Практические ("+practNum+")"+" "+g);
+        rootItem.setValue("Курсы "+g);
+        practBranchItem.setValue("Практические ("+practNum+")");
         projBranchItem.setValue("Проектные ("+projNum+")");
         theorBranchItem.setValue("Теоретические ("+theorNum+")");
 
