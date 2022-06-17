@@ -5,6 +5,7 @@ import com.example.java.courses.Course;
 import com.example.java.humans.Student;
 import com.example.java.humans.Teacher;
 
+import com.example.java.parties.Party;
 import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
 import javafx.scene.control.*;
@@ -19,12 +20,20 @@ public class Controller {
     ArrayList<Student> students = new ArrayList<>();
     ArrayList<Teacher> teachers = new ArrayList<>();
     ArrayList<Course> courses = new ArrayList<>();
+    ArrayList<Party> parties = new ArrayList<>();
+
     Writer writer = new Writer();
     Deccanat deccanat=null;
     //Map<Teacher, Boolean> teacherBooleanMap = new HashMap();
 
     @FXML
     private TreeView<String> tree1;
+
+    @FXML
+    private TreeView<String> tree2;
+
+    @FXML
+    private TreeView<String> tree3;
 
 
     @FXML
@@ -87,12 +96,36 @@ public class Controller {
     @FXML
     void CreateCoursewithSt(ActionEvent event) throws Exception {
         deccanat.CreateCourseWithStudents(students, courses);
+        deccanat.countTch();
     }
 
     @FXML
     void ShowCourse(ActionEvent event) throws IOException, InvalidFormatException {
         writer.writeTree(tree1, courses);
     }
+
+    @FXML
+    void CreateParty(ActionEvent event) throws Exception {
+        for (Party p : deccanat.CreateParties()) {
+            parties.add(p);
+        }
+        for (Party p:parties){
+            System.out.println(p.getName()+" "+p.getFocus()+" "+p.getStudents());
+        }
+    }
+
+    @FXML
+    void ShowParty(ActionEvent event) throws IOException, InvalidFormatException {
+        writer.writeTree3(tree3, parties);
+
+    }
+
+    @FXML
+    void ShowTeacher(ActionEvent event) throws IOException, InvalidFormatException {
+        writer.writeTree2(tree2, teachers);
+
+    }
+
 
 
     @FXML

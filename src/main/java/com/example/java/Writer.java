@@ -1,6 +1,7 @@
 package com.example.java;
 
 
+import com.example.java.parties.Party;
 import javafx.application.Application;
 import com.example.java.courses.Course;
 import com.example.java.courses.CoursePractical;
@@ -88,5 +89,48 @@ public class Writer {
 
         tree.setRoot(rootItem);
     }
+
+
+    public void writeTree2(TreeView tree, ArrayList<Teacher> teachers) {
+
+
+        TreeItem<String> rootItem = new TreeItem<>("Преподаватели:");
+        rootItem.setExpanded(true);
+
+        for (Teacher teacher: teachers){
+            rootItem.getChildren().add(new TreeItem<>(teacher.getFullName()+": " + teacher.getCount()+" - студентов"));
+
+        }
+
+        tree.setRoot(rootItem);
+    }
+
+
+    public void writeTree3(TreeView tree, ArrayList<Party> parties) {
+
+
+        TreeItem<String> rootItem = new TreeItem<>("Клубы:");
+        rootItem.setExpanded(true);
+
+        for (Party party: parties){
+            TreeItem<String> partyItem = new TreeItem<>(party.getFocus()+" - "+party.getName()+" "+ party.getOccupancy());
+            rootItem.getChildren().add(partyItem);
+
+            party.getStudents().forEach((obj) -> {
+                Student student = (Student) obj;
+
+                if (student != null){
+
+                    partyItem.getChildren().add(new TreeItem<>(student.getFullName() + " " + student.getFocus()+" " + student.getParty()));
+
+                }
+
+            });
+
+        }
+
+        tree.setRoot(rootItem);
+    }
+
 
 }

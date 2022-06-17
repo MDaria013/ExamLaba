@@ -3,6 +3,9 @@ package com.example.java;
 import com.example.java.courses.Course;
 import com.example.java.humans.Student;
 import com.example.java.humans.Teacher;
+import com.example.java.parties.Party;
+import com.example.java.parties.PartyFabric;
+import com.example.java.parties.PartyGenerator;
 import org.apache.poi.openxml4j.exceptions.InvalidFormatException;
 import org.apache.poi.ss.formula.functions.T;
 
@@ -16,6 +19,7 @@ public class Deccanat {
     ArrayList<Student> students = new ArrayList<>();
     ArrayList<Teacher> teachers = new ArrayList<>();
     ArrayList<Course> courses = new ArrayList<>();
+    ArrayList<Party> parties = new ArrayList<>();
     CourseFabric courseFabric = null;
     CourseGenerator courseGenerator = null;
 
@@ -24,6 +28,9 @@ public class Deccanat {
     FabricStudent fabricStudent = null;
     private ThreadLocalRandom random;
 
+    PartyGenerator partyGenerator = null;
+    PartyFabric partyFabric = null;
+
 
     public Deccanat(File file) throws IOException, InvalidFormatException {
         this.courseGenerator = new CourseGenerator(file);
@@ -31,7 +38,10 @@ public class Deccanat {
         this.humanGenerator = new HumanGenerator(file);
         this.fabricStudent = new FabricStudent(humanGenerator);
         this.fabricTeacher = new FabricTeacher(humanGenerator);
+        this.partyGenerator = new PartyGenerator(file);
+        this.partyFabric = new PartyFabric(partyGenerator);
     }
+
 
     public ArrayList<Student> CreateStudents(){
         for (int j = 0; j < 600; j++) {
@@ -185,6 +195,85 @@ public class Deccanat {
 
         }
 
+    }
+
+
+    public void countTch() {
+
+        for (Teacher teacher : teachers) {
+
+            int count = 0;
+
+            for (int i = 0; i < courses.size(); i++) {
+
+                if (courses.get(i).getTeacher().equals(teacher)) {
+                    count = count + courses.get(i).getOccupancy();
+                    teacher.setCount(count);
+                }
+            }
+        }
+    }
+
+    public ArrayList<Party> CreateParties() {
+        for (int j = 1; j <= 6; j++) {
+            Party pt = partyFabric.CreateParty();
+            parties.add(pt);
+        }
+
+        generateStudents1(students, parties);
+
+        return parties;
+    }
+    public void generateStudents1(ArrayList<Student> studentArrayList, ArrayList<Party> parties) {
+
+
+        ArrayList<Student> freest = new ArrayList<>(studentArrayList);
+
+        for (Student student : studentArrayList) {
+            if (freest.contains(student)) {
+
+                int numPartyStudentBest = -1;
+                int numPartyStudentNorm = -1;
+
+
+                for (int i = 0; i < parties.size(); i++) {
+
+                    if (student.getDesire() == true && student.getFocus().equals(parties.get(i).getFocus()) && student.getParty().equals(parties.get(i).getName())) {
+
+                        if (parties.get(i).getOccupancy() < 100) {
+
+                            numPartyStudentBest = i;
+                            break;
+
+                        }
+                        break;
+                    }
+                }
+
+                for (int i = 0; i < parties.size(); i++) {
+                    if (student.getDesire() == true && student.getParty().equals(parties.get(i).getName())) {
+
+                        if (parties.get(i).getOccupancy() < 100) {
+
+                            numPartyStudentNorm = i;
+                            break;
+
+                        }
+
+                    }}
+
+                if (numPartyStudentBest != -1) {
+                    parties.get(numPartyStudentBest).getStudents().add(student);
+                    parties.get(numPartyStudentBest).addOccupancy();
+                } else if (numPartyStudentNorm != -1) {
+                    parties.get(numPartyStudentNorm).getStudents().add(student);
+                    parties.get(numPartyStudentNorm).addOccupancy();
+                }
+
+                freest.remove(student);
+
+            }
+        }
     }
 
 }

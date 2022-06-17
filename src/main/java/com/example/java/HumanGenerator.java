@@ -7,10 +7,10 @@ import org.apache.poi.xssf.usermodel.XSSFWorkbook;
 
 import java.io.File;
 import java.io.IOException;
+import java.util.Random;
 import java.util.concurrent.ThreadLocalRandom;
 
 public class HumanGenerator {
-
     private Reader reader;
 
     private ThreadLocalRandom random;
@@ -23,6 +23,8 @@ public class HumanGenerator {
     private String[] subject;
     private String[] format;
     private String[] science;
+    private String[] focus;
+    private String[] party;
 
     public String[] getMale_name(){
         return male_name;
@@ -56,6 +58,10 @@ public class HumanGenerator {
         return science;
     }
 
+    public String[] getFocus() { return focus;}
+
+    public String[] getParty() { return party;}
+
 
     public HumanGenerator(File file) throws IOException, InvalidFormatException {
         this.random = ThreadLocalRandom.current();
@@ -72,6 +78,8 @@ public class HumanGenerator {
         subject = reader.readData(4);
         format = reader.readData(5);
         science = reader.readData(6);
+        party = reader.readData(7);
+        focus = reader.readData(8);
         reader.close();
     }
 
@@ -107,6 +115,13 @@ public class HumanGenerator {
         return s;
     }
 
+    public boolean GeneratorDesire() {
+        Random random = new Random();
+        boolean s = random.nextBoolean();
+        //(int)Math.random()*100*arr.length];
+        return s;
+    }
+
     public String GeneratorFemale_Surname(String[] arr) {
         String surname = Generator(arr);
         String Female_Surname = "";
@@ -126,7 +141,7 @@ public class HumanGenerator {
         if (patronomyc.endsWith("льич")) {
             Female_patronomyc = patronomyc.substring(0, patronomyc.length() - 1) + "нична";
         }else{
-        Female_patronomyc = patronomyc.substring(0, patronomyc.length() - 3) + "вна";}
+            Female_patronomyc = patronomyc.substring(0, patronomyc.length() - 3) + "вна";}
         return Female_patronomyc;
     }
 
