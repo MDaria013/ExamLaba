@@ -42,87 +42,149 @@ public class Deccanat {
     return students;
     }
 
-
     public ArrayList<Teacher> CreateTeachers(){
      for (int j = 1; j <= 18; j++) {
         teachers.add(fabricTeacher.CreateData());
        }
-     for (Teacher teacher:teachers){
-         System.out.println(teacher.getFullName());
-     }
+
     return teachers;
     }
 
-    public ArrayList<Course> CreateCourses(ArrayList<Teacher> teachers, ArrayList<Student> students) throws Exception {
+    public ArrayList<Course> CreateCourses(ArrayList<Teacher> teachers) {
         for (int j = 0; j < 30; j++) {
             courses.add(courseFabric.CreateCourses());
-            generateStudents(students,courses);}
-            GeneratorCourses(courses);
+        }
+
+        GeneratorCoursesWithTeach(courses);
+
+        //generateStudents(students, courses);
 
         return courses;
     }
 
-    public HashSet GeneratorTeachers(ArrayList<Teacher> teachersList, int index) {
-        HashSet<Teacher> tch = new HashSet<>();
-                        tch.add(teachersList.get(index));
+    public void CreateCourseWithStudents(ArrayList<Student> students, ArrayList<Course> courses){
+        generateStudents(students, courses);
+    }
+
+
+    public Teacher GeneratorTeachers(ArrayList<Teacher> teachersList, int index) {
+        Teacher tch = (teachersList.get(index));
         return tch;
     }
 
 
-    public void GeneratorCourses(ArrayList<Course> coursesList) {
+    public void GeneratorCoursesWithTeach(ArrayList<Course> coursesList) {
         Random r = new Random();
         for (int i = 0; i < courses.size(); i++) {
             if (i < 18) {
-                courses.get(i).setTeachers(GeneratorTeachers(teachers, i));
+
+                courses.get(i).setTeacher(GeneratorTeachers(teachers, i));
             } else if (i < 29) {
 
-                courses.get(i).setTeachers(GeneratorTeachers(teachers, i - 18));
+                courses.get(i).setTeacher(GeneratorTeachers(teachers, i - 18));
             } else if (i < 30) {
 
-                courses.get(i).setTeachers(GeneratorTeachers(teachers, i - r.nextInt(12, 29)));
+                courses.get(i).setTeacher(GeneratorTeachers(teachers, i - r.nextInt(12, 29)));
             }
         }
     }
 
 
     public void generateStudents(ArrayList<Student> studentArrayList, ArrayList<Course> courses) {
-        int num = ThreadLocalRandom.current().nextInt(1, 2);
-        List<Student> students = null;
 
         ArrayList<Student> freest = new ArrayList<>(studentArrayList);
 
-        for (int i = 0; i < courses.size(); i++) {
-            int j = 0;
-            students = new ArrayList<>();
-            int occupancy = 0;
-            int Id = 0;
-            for (Student student : studentArrayList) {
-                if (j < 30) {
-                    if (freest.contains(student)) {
-                        if (student.getScience().equals(courses.get(i).getScience()) &&
-                                student.getSubject().equals(courses.get(i).getSubject()) && student.getFormat().equals(courses.get(i).getFormat()) ||
-                                (student.getSubject().equals(courses.get(i).getSubject()) && student.getFormat().equals(courses.get(i).getFormat()))) {
-                            students.add(student);
-                            freest.remove(student);
-                            Id = Id + 1;
-                            student.setId(Id);
-                            occupancy = occupancy + 1;
-                            j++;
-                            courses.get(i).setOccupancy(occupancy);
+
+        for (Student student : studentArrayList) {
+            if (freest.contains(student)) {
+
+//              int numCourseStudentAbs;
+//              studentAbsCourse;
+
+                int numCourseStudentBest = -1;
+                int numCourseStudentNorm = -1;
+                int numCourseStudentBad = -1;
+                int ratingNorm = 0;
+                int ratingBad = 0;
+
+
+                for (int i = 0; i < courses.size(); i++) {
+
+
+                    if ((student.getScience().equals(courses.get(i).getScience()) &&
+                            student.getSubject().equals(courses.get(i).getSubject()) &&
+                            student.getFormat().equals(courses.get(i).getFormat()))) {
+
+                        if (courses.get(i).getOccupancy() < 30) {
+
+
+                            numCourseStudentBest = i;
+                            break;
+                        }
+
+                    } else {
+
+                        if ((student.getSubject().equals(courses.get(i).getSubject()) && student.getFormat().equals(courses.get(i).getFormat()))) {
+
+                            if (courses.get(i).getOccupancy() < 30) {
+
+
+                                if (ratingNorm == 0) {
+
+                                    ratingNorm = courses.get(i).getTeacher().getRating();
+
+                                    numCourseStudentNorm = i;
+                                } else {
+                                    if (courses.get(i).getTeacher().getRating() > ratingNorm) {
+                                        ratingNorm = courses.get(i).getTeacher().getRating();
+
+                                        numCourseStudentNorm = i;
+                                    }
+                                }
+
+                            }
+
                         } else {
-                            courses.get(i).setOccupancy(occupancy);
-                        }}
-                    } else break;
+                            if (courses.get(i).getOccupancy() < 30) {
 
-                    Collections.sort(students, Comparator.comparing(Student::getId));
-                    Set<Student> unique = new LinkedHashSet<>(students);
 
-                    courses.get(i).setStudents(unique);
+                                if (ratingBad == 0) {
+
+                                    ratingBad = courses.get(i).getTeacher().getRating();
+
+                                    numCourseStudentBad = i;
+                                } else {
+                                    if (courses.get(i).getTeacher().getRating() > ratingBad) {
+                                        ratingBad = courses.get(i).getTeacher().getRating();
+
+                                        numCourseStudentBad = i;
+                                    }
+                                }
+
+                            }
+                        }
+
+                    }
                 }
+
+                if (numCourseStudentBest != -1) {
+                    courses.get(numCourseStudentBest).getStudents().add(student);
+                    courses.get(numCourseStudentBest).addOccupancy();
+                } else if (numCourseStudentNorm != -1) {
+                    courses.get(numCourseStudentNorm).getStudents().add(student);
+                    courses.get(numCourseStudentNorm).addOccupancy();
+                } else if (numCourseStudentBad!= -1) {
+                    courses.get(numCourseStudentBad).getStudents().add(student);
+                    courses.get(numCourseStudentBad).addOccupancy();
+                }
+
+                freest.remove(student);
+
             }
 
+
+        }
+
     }
-
-
 
 }

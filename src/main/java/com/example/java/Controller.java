@@ -24,7 +24,7 @@ public class Controller {
     //Map<Teacher, Boolean> teacherBooleanMap = new HashMap();
 
     @FXML
-    private TreeView<String> tree;
+    private TreeView<String> tree1;
 
 
     @FXML
@@ -50,11 +50,14 @@ public class Controller {
     @FXML
     void ChooseFile(ActionEvent event) {
         try {
-            FileChooser fc = new FileChooser();
-            fc.setInitialDirectory(new File("C:\\Users\\user\\IdeaProjects\\F\\ExamLaba1.3"));
-            FileChooser.ExtensionFilter extFilter = new FileChooser.ExtensionFilter("Excel", "*.xlsx");
-            fc.getExtensionFilters().add(extFilter);
-            File selectedFile = fc.showOpenDialog(null);
+//            FileChooser fc = new FileChooser();
+//            fc.setInitialDirectory(new File("C:\\Users\\user\\IdeaProjects\\F\\ExamLaba1.3"));
+//            FileChooser.ExtensionFilter extFilter = new FileChooser.ExtensionFilter("Excel", "*.xlsx");
+//            fc.getExtensionFilters().add(extFilter);
+//            File selectedFile = fc.showOpenDialog(null);
+
+            File selectedFile = new File(this.getClass().getResource("examlaba.xlsx").getFile());
+
             deccanat = new Deccanat(selectedFile);
 
 
@@ -76,23 +79,25 @@ public class Controller {
 
     @FXML
     void CreateCourse(ActionEvent event) throws Exception {
-        for (Course c: deccanat.CreateCourses(teachers, students)){
+        for (Course c : deccanat.CreateCourses(teachers)) {
             courses.add(c);
         }
     }
 
     @FXML
+    void CreateCoursewithSt(ActionEvent event) throws Exception {
+        deccanat.CreateCourseWithStudents(students, courses);
+    }
+
+    @FXML
     void ShowCourse(ActionEvent event) throws IOException, InvalidFormatException {
-        writer.writeTree(tree, courses, teachers, students);
+        writer.writeTree(tree1, courses);
     }
 
 
     @FXML
     void Showtext (ActionEvent event) {
-        MultipleSelectionModel<TreeItem<String>> selectionModel = tree.getSelectionModel();
-        // устанавливаем множественный выбор (если он необходим)
-        selectionModel.setSelectionMode(SelectionMode.MULTIPLE);
-
+        MultipleSelectionModel<TreeItem<String>> selectionModel = tree1.getSelectionModel();
 
         String selected = "";
         // перебираем выбанные элементы
@@ -105,16 +110,12 @@ public class Controller {
 
     @FXML
     void Createtext (ActionEvent event) {
-        MultipleSelectionModel<TreeItem<String>> selectionModel = tree.getSelectionModel();
-        // устанавливаем множественный выбор (если он необходим)
-        selectionModel.setSelectionMode(SelectionMode.MULTIPLE);
-
+        MultipleSelectionModel<TreeItem<String>> selectionModel = tree1.getSelectionModel();
 
         String selected = "";
-        // перебираем выбанные элементы
         for(TreeItem<String> item : selectionModel.getSelectedItems()){
 
-            selected += item.getValue() + " ";
+            //selected += item.getValue() + " ";
 
             item.setValue(textt.getText());}
 
@@ -125,137 +126,4 @@ public class Controller {
         System.exit(0);
     }
 
-
-
-
-   /* @FXML
-    void ReadingBook(ActionEvent event) {
-        try {
-
-            File fileB = new File("C:\\Users\\user\\IdeaProjects\\F\\ExamLaba1.1\\examlaba.xlsx");
-            try {
-                humanFabric = new HumanFabric(fileB);
-            } catch (IOException e) {
-                e.printStackTrace();
-            } catch (InvalidFormatException e) {
-                e.printStackTrace();
-            }
-
-
-            for (int j = 0; j < 18; j++) {
-                teachers.add(humanFabric.CreateTeachers());}
-
-            for (int j = 0; j < 60; j++) {
-                students.add(humanFabric.CreateStudents());}
-
-            //Сортировка студентов
-            Collections.sort(students, Comparator.comparing(Student::getRating).reversed());
-
-
-            for(Student student: students){
-                System.out.println(student.getFullName());
-            }
-
-        } catch (Exception e) {
-            error(e);
-        }
-    }
-
-    @FXML
-    void ReadingUser(ActionEvent event) {
-        try {
-
-            File fileA = new File("C:\\Users\\user\\IdeaProjects\\F\\ExamLaba1.0\\course.xlsx");
-            try {
-                courseFabric = new CourseFabric(fileA);
-            } catch (IOException e) {
-                e.printStackTrace();
-            } catch (InvalidFormatException e) {
-                e.printStackTrace();
-            }
-
-            for (int j = 0; j < 30; j++) {
-                courses.add(courseFabric.CreateCourses(teachers));}
-
-        } catch (Exception e) {
-            error(e);
-        }
-    }
-
-    @FXML
-    void Showtree(ActionEvent event) {
-        try {
-
-            //initializeTree();
-            writeTree3();
-
-        } catch (Exception e) {
-            error(e);
-        }
-    }
-
-
-    @FXML
-    void ShowChoose(ActionEvent event) {
-        try {
-
-            //initializeTree();
-            //writeTree4();
-
-        } catch (Exception e) {
-            error(e);
-        }
-    }
-*/
-
-
-
-
-
-
-    public void initializeTree() {
-
-        TreeItem<String> rootItem = new TreeItem<>("Курсы");
-        rootItem.setExpanded(true);
-
-        /*for (Teacher teacher : teachers) {
-
-            TreeItem<String> branchItem = new TreeItem<>(teacher.getFullName()+" "+teacher.getCourses().size());
-            rootItem.getChildren().add(branchItem);
-
-            teacher.getCourses().forEach((obj) -> {
-                Course course = (Course) obj;
-                TreeItem<String> teacherItem = new TreeItem<>(course.getFullName());
-                branchItem.getChildren().add(teacherItem);
-            });
-        }*/
-
-        for (Course course : courses) {
-
-            TreeItem<String> branchItem = new TreeItem<>(course.getName());
-            rootItem.getChildren().add(branchItem);
-
-            /*TreeItem<String> bookItem = new TreeItem<>(book.getName());
-            branchItem.getChildren().add(bookItem);
-            bookItem.getChildren().add(new TreeItem<>("Тип : " + book.getType()));
-            bookItem.getChildren().add(new TreeItem<>("Язык : " + book.getLanguage()));
-            */
-
-
-            branchItem.getChildren().add(new TreeItem<>("Наука : " + course.getScience()));
-            branchItem.getChildren().add(new TreeItem<>("Предмет : " + course.getSubject()));
-            branchItem.getChildren().add(new TreeItem<>("Формат : " + course.getFormat()));
-
-            course.getTeachers().forEach((obj) -> {
-                Teacher teacher = (Teacher) obj;
-                TreeItem<String> teacherItem = new TreeItem<>(teacher.getFullName());
-                branchItem.getChildren().add(teacherItem);
-            });
-        }
-
-        tree.setRoot(rootItem);
-    }
-
-    TreeItem<String> courseItem;
-
-   }
+}

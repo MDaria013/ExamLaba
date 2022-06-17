@@ -7,8 +7,7 @@ public class Student extends Human{
     private String subject;
     protected String format;
     private String science;
-    private int Id;
-    private int course=0;
+
 
     public Student(String name, String surname, String group, String science,String subject, String format, Integer rating) {
         super(name, surname,rating);
@@ -56,13 +55,5 @@ public class Student extends Human{
         this.group=group;
     }
 
-    public int getId(){return  this.Id;}
-
-    public void setId(int Id){this.Id=Id;}
-
-    public int getCourse(){return this.course;}
-
-    public void setCourse(int course){
-        this.course=course;}
 
 }

@@ -12,6 +12,10 @@ public abstract class Course {
     private String science;
     private String format;
     private int occupancy;
+    Teacher teacher;
+    Set<Student> students = new HashSet<>();
+
+
 
     public Course() {
     }
@@ -45,19 +49,21 @@ public abstract class Course {
         this.occupancy=occupancy;
     }
 
+    public void addOccupancy(){
+        this.occupancy+=1;
+    }
+
     public abstract void setCourseData(String name, String science, String subject);
 
     Set<Teacher> teachers = new HashSet<>();
 
-    public Set getTeachers() {
-        return teachers;
+    public Teacher getTeacher() {
+        return teacher;
     }
 
-    public void setTeachers(Set teachers) {
-        this.teachers = teachers;
+    public void setTeacher(Teacher teacher) {
+        this.teacher = teacher;
     }
-
-    Set<Student> students = new HashSet<>();
 
     public Set getStudents() {
         return students;

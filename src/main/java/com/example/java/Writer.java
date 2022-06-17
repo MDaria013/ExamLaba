@@ -16,14 +16,14 @@ import java.util.ArrayList;
 
 public class Writer {
 
-    public void writeTree(TreeView tree, ArrayList<Course> courses, ArrayList<Teacher> teachers, ArrayList<Student> students) {
+
+    public void writeTree(TreeView tree, ArrayList<Course> courses) {
 
         int theorNum = 0;
         int projNum = 0;
         int practNum = 0;
 
-        int g=0;
-
+        int g = 0;
 
         TreeItem<String> rootItem = new TreeItem<>();
         rootItem.setExpanded(true);
@@ -34,17 +34,17 @@ public class Writer {
         TreeItem<String> theorBranchItem = new TreeItem<>();
         rootItem.getChildren().add(theorBranchItem);
 
-        for (Course course:courses) {
-        g=g+course.getOccupancy();
+        for (Course course : courses) {
+            g = g + course.getOccupancy();
 
-            TreeItem<String> c = new TreeItem<>("'" + course.getName() + "' "+course.getOccupancy());
-            if (course instanceof CourseTheoretical){
+            TreeItem<String> c = new TreeItem<>("'" + course.getName() + "' " + course.getOccupancy());
+            if (course instanceof CourseTheoretical) {
                 theorBranchItem.getChildren().add(c);
                 theorNum++;
-            } else if (course instanceof CoursePractical){
+            } else if (course instanceof CoursePractical) {
                 practBranchItem.getChildren().add(c);
                 practNum++;
-            }else if (course instanceof CourseProject){
+            } else if (course instanceof CourseProject) {
                 projBranchItem.getChildren().add(c);
                 projNum++;
             }
@@ -54,35 +54,39 @@ public class Writer {
             c.getChildren().add(new TreeItem<>("Формат : " + course.getFormat()));
 
 
+            Teacher teacher = course.getTeacher();
 
-            course.getTeachers().forEach((obj) -> {
-                Teacher teacher = (Teacher) obj;
 
-                TreeItem<String> teacherItem = new TreeItem<>("Преподаватель: " + teacher.getFullName());
-                c.getChildren().add(teacherItem);
-                teacherItem.getChildren().add(new TreeItem<>("Факультет : " + teacher.getFaculty()));
-                teacherItem.getChildren().add(new TreeItem<>("Рейтинг : " + teacher.getRating()));
+            TreeItem<String> teacherItem = new TreeItem<>("Преподаватель: " + teacher.getFullName()+" "+teacher.getCount());
+            c.getChildren().add(teacherItem);
+            teacherItem.getChildren().add(new TreeItem<>("Факультет : " + teacher.getFaculty()));
+            teacherItem.getChildren().add(new TreeItem<>("Рейтинг : " + teacher.getRating()));
 
-            });
 
-            TreeItem<String> studentItem = new TreeItem<>("Студенты: " );
+            TreeItem<String> studentItem = new TreeItem<>("Студенты: ");
             c.getChildren().add(studentItem);
 
             course.getStudents().forEach((obj) -> {
                 Student student = (Student) obj;
 
-                studentItem.getChildren().add(new TreeItem<>(student.getId()+". " +student.getFullName() + " " + student.getPreference()));
+
+
+                if (student != null){
+
+                    studentItem.getChildren().add(new TreeItem<>(student.getFullName() + " " + student.getPreference()));
+
+                }
 
             });
 
         }
 
-        rootItem.setValue("Курсы "+g);
-        practBranchItem.setValue("Практические ("+practNum+")");
-        projBranchItem.setValue("Проектные ("+projNum+")");
-        theorBranchItem.setValue("Теоретические ("+theorNum+")");
+        rootItem.setValue("Курсы " + g);
+        practBranchItem.setValue("Практические (" + practNum + ")");
+        projBranchItem.setValue("Проектные (" + projNum + ")");
+        theorBranchItem.setValue("Теоретические (" + theorNum + ")");
 
         tree.setRoot(rootItem);
     }
 
-   }
+}
